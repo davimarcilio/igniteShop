@@ -20,6 +20,12 @@ interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
+  const { isFallback } = useRouter();
+
+  if (isFallback) {
+    return <p>Loading</p>;
+  }
+
   return (
     <ProductContainer>
       <ImageContainer>
@@ -44,7 +50,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
         },
       },
     ],
-    fallback: false,
+    fallback: true,
   };
 };
 
@@ -63,6 +69,7 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
   });
 
   const price = product.default_price as Stripe.Price;
+  console.log(product);
 
   return {
     props: {
@@ -70,12 +77,13 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
         id: product.id,
         name: product.name,
         imageUrl: product.images[0],
+        description: product.description,
+
         price: new Intl.NumberFormat("pt-BR", {
           style: "currency",
           currency: "BRL",
         }).format(price.unit_amount! / 100),
       },
-      description: product.description,
     },
     revalidate: 60 * 60 * 1,
   };
