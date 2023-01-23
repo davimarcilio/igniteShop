@@ -9,11 +9,11 @@ globalStyles();
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Container>
-      <Link href={"/"}>
-        <Header>
+      <Header>
+        <Link href={"/"}>
           <Image src={Logo} alt="" />
-        </Header>
-      </Link>
+        </Link>
+      </Header>
       <Component {...pageProps} />
     </Container>
   );
