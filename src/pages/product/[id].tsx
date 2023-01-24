@@ -4,9 +4,11 @@ import {
   ProductContainer,
   ProductDetails,
 } from "@/src/styles/pages/product";
+import axios from "axios";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import Stripe from "stripe";
 
 interface ProductProps {
@@ -16,14 +18,36 @@ interface ProductProps {
     imageUrl: string;
     price: string;
     description: string;
+    defaultPriceId: string;
   };
 }
 
 export default function Product({ product }: ProductProps) {
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
+    useState(false);
+
   const { isFallback } = useRouter();
 
   if (isFallback) {
     return <p>Loading</p>;
+  }
+
+  async function handleBuyProduct() {
+    try {
+      setIsCreatingCheckoutSession(true);
+      const response = await axios.post("/api/checkout", {
+        priceId: product.defaultPriceId,
+      });
+      const { checkoutUrl } = response.data;
+
+      window.location.href = checkoutUrl;
+    } catch (error) {
+      //Conectar com uma ferramenta de observabilidade(datadog/sentry)
+
+      setIsCreatingCheckoutSession(false);
+
+      alert("Falha ao redirecionar ao checkout!");
+    }
   }
 
   return (
@@ -35,7 +59,9 @@ export default function Product({ product }: ProductProps) {
         <h1>{product.name}</h1>
         <span>{product.price}</span>
         <p>{product.description}</p>
-        <button>Comprar agora</button>
+        <button disabled={isCreatingCheckoutSession} onClick={handleBuyProduct}>
+          Comprar agora
+        </button>
       </ProductDetails>
     </ProductContainer>
   );
@@ -63,7 +89,6 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
   });
 
   const price = product.default_price as Stripe.Price;
-  console.log(product);
 
   return {
     props: {
@@ -72,7 +97,7 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
         name: product.name,
         imageUrl: product.images[0],
         description: product.description,
-
+        defaultPriceId: price.id,
         price: new Intl.NumberFormat("pt-BR", {
           style: "currency",
           currency: "BRL",
