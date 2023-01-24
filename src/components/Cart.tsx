@@ -4,6 +4,7 @@ import {
   ModalClose,
   ModalContent,
   ModalTitle,
+  ModalTitleAndItems,
 } from "../styles/components/Cart";
 import { X } from "phosphor-react";
 import { CartItem } from "./CartItem";
@@ -11,11 +12,13 @@ export function Cart() {
   return (
     <Dialog.Portal>
       <ModalContent>
+        <ModalTitleAndItems>
+          <ModalTitle>Sacola de compras</ModalTitle>
+          <CartItem />
+        </ModalTitleAndItems>
         <ModalClose>
           <X size={24} />
         </ModalClose>
-        <ModalTitle>Sacola de compras</ModalTitle>
-        <CartItem />
         <InfoContainer>
           <div>
             <span>Quantidade</span>

@@ -4,14 +4,32 @@ export const CardItemContainer = styled("div", {
   display: "flex",
   alignItems: "center",
   gap: "1.25rem",
-
   div: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
+    gap: "0.875rem",
+    // justifyContent: "space-between",
     // alignItems: "center",
     h1: {
       fontSize: "1.125rem",
+      color: "$gray300",
+      fontWeight: "Normal",
+    },
+    strong: {
+      fontSize: "1.125rem",
+      color: "$gray100",
+    },
+    button: {
+      backgroundColor: "transparent",
+      color: "$green500",
+      fontWeight: "bold",
+      border: "none",
+      display: "flex",
+      cursor: "pointer",
+      transition: "color 0.2s",
+      "&:hover": {
+        color: "$green300",
+      },
     },
   },
 });

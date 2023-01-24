@@ -13,6 +13,12 @@ export const ModalContent = styled(Dialog.Content, {
   justifyContent: "space-between",
 });
 
+export const ModalTitleAndItems = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+  gap: "2rem",
+});
+
 export const ModalTitle = styled(Dialog.Title, {
   marginTop: "calc(3rem - 1.5rem)",
 });
@@ -26,6 +32,10 @@ export const ModalClose = styled(Dialog.Close, {
   border: "none",
   color: "#8D8D99",
   cursor: "pointer",
+  transition: "color 0.2s",
+  "&:hover": {
+    color: "#e1e1e9",
+  },
 });
 
 export const InfoContainer = styled("div", {
@@ -56,10 +66,16 @@ export const InfoContainer = styled("div", {
     paddingTop: "1.25rem",
     paddingBottom: "1.25rem",
     fontSize: "1.125rem",
+    marginTop: "3rem",
     fontWeight: "bold",
     backgroundColor: "$green500",
     borderRadius: 6,
     border: "none",
     color: "$white",
+    cursor: "pointer",
+    transition: "background-color 0.2s",
+    "&:hover": {
+      backgroundColor: "$green300",
+    },
   },
 });
