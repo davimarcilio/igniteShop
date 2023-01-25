@@ -14,15 +14,7 @@ interface HomeProps {
 }
 
 export default function Home({ products }: HomeProps) {
-  const { placeOnCart } = useContext(CartContext);
-
-  const [windowSize, setWindowSize] = useState(0);
-
-  useEffect(() => {
-    const { innerWidth: width } = window;
-
-    setWindowSize(width);
-  }, []);
+  const { placeOnCart, windowSize } = useContext(CartContext);
 
   const [sliderRef] = useKeenSlider({
     slides: {

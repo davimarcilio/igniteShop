@@ -24,8 +24,6 @@ interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
-    useState(false);
   const { placeOnCart } = useContext(CartContext);
   const { isFallback } = useRouter();
 
@@ -56,12 +54,7 @@ export default function Product({ product }: ProductProps) {
             }).format(product.price / 100)}
           </span>
           <p>{product.description}</p>
-          <button
-            disabled={isCreatingCheckoutSession}
-            onClick={handlePlaceOnCart}
-          >
-            Comprar agora
-          </button>
+          <button onClick={handlePlaceOnCart}>Comprar agora</button>
         </ProductDetails>
       </ProductContainer>
     </>

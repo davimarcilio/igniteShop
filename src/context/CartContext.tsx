@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 
 interface CartContextProps {
   children: ReactNode;
@@ -22,6 +22,7 @@ export interface ProductForCheckout {
 interface Context {
   products: Product[];
   isAddingToCart: boolean;
+  windowSize: number;
   placeOnCart: (product: Product) => void;
   buyProducts: (allProductsInCart: ProductForCheckout[]) => void;
   removeFromCart: (productId: string) => void;
@@ -32,6 +33,14 @@ export const CartContext = createContext({} as Context);
 export function CartContextProvider({ children }: CartContextProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+
+  const [windowSize, setWindowSize] = useState(0);
+
+  useEffect(() => {
+    const { innerWidth: width } = window;
+
+    setWindowSize(width);
+  }, []);
 
   function placeOnCart(product: Product) {
     setProducts((state) => [...state, product]);
@@ -62,6 +71,7 @@ export function CartContextProvider({ children }: CartContextProps) {
       value={{
         products,
         isAddingToCart,
+        windowSize,
         placeOnCart,
         buyProducts,
         removeFromCart,
