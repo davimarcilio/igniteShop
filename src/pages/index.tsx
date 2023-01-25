@@ -5,7 +5,6 @@ import "keen-slider/keen-slider.min.css";
 import { GetStaticProps } from "next";
 import { stripe } from "../lib/stripe";
 import Stripe from "stripe";
-import Head from "next/head";
 import { Handbag } from "phosphor-react";
 import { useContext, useEffect, useState } from "react";
 import { CartContext, Product as ProductType } from "../context/CartContext";
@@ -34,9 +33,6 @@ export default function Home({ products }: HomeProps) {
 
   return (
     <>
-      <Head>
-        <title>Home | Ignite Shop</title>
-      </Head>
       <HomeContainer ref={sliderRef} className={"keen-slider"}>
         {products.map((product) => {
           function handlePlaceOnCart() {
