@@ -10,7 +10,6 @@ import {
   MultiImagesContainer,
   SuccessContainer,
 } from "../styles/pages/success";
-import * as Avatar from "@radix-ui/react-avatar";
 interface SuccessProps {
   customerName: string;
   product: {

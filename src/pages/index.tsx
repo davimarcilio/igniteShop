@@ -7,7 +7,7 @@ import { stripe } from "../lib/stripe";
 import Stripe from "stripe";
 import Head from "next/head";
 import { Handbag } from "phosphor-react";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CartContext, Product as ProductType } from "../context/CartContext";
 
 interface HomeProps {
@@ -16,9 +16,18 @@ interface HomeProps {
 
 export default function Home({ products }: HomeProps) {
   const { placeOnCart } = useContext(CartContext);
+
+  const [windowSize, setWindowSize] = useState(0);
+
+  useEffect(() => {
+    const { innerWidth: width } = window;
+
+    setWindowSize(width);
+  }, []);
+
   const [sliderRef] = useKeenSlider({
     slides: {
-      perView: 3,
+      perView: windowSize <= 668 ? 1 : 3,
       spacing: 48,
     },
   });

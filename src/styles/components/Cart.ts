@@ -7,7 +7,7 @@ export const ModalContent = styled(Dialog.Content, {
   backgroundColor: "$gray800",
   padding: "3rem",
   height: "100%",
-  minWidth: 480,
+  maxWidth: "100%",
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
