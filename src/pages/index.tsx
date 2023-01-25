@@ -12,7 +12,7 @@ interface HomeProps {
     id: string;
     name: string;
     imageUrl: string;
-    price: string;
+    price: number;
   }[];
 }
 
@@ -49,7 +49,7 @@ export default function Home({ products }: HomeProps) {
 
               <footer>
                 <strong> {product.name} </strong>
-                <span> {product.price} </span>
+                <span>{product.price}</span>
               </footer>
             </Product>
           );

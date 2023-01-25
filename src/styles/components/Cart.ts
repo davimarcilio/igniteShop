@@ -74,8 +74,11 @@ export const InfoContainer = styled("div", {
     color: "$white",
     cursor: "pointer",
     transition: "background-color 0.2s",
-    "&:hover": {
+    "&:not(:disabled):hover": {
       backgroundColor: "$green300",
+    },
+    "&:disabled": {
+      opacity: 0.6,
     },
   },
 });
