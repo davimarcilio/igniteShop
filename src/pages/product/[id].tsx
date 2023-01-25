@@ -1,3 +1,4 @@
+import MyLoader from "@/src/components/Loader";
 import { CartContext } from "@/src/context/CartContext";
 import { stripe } from "@/src/lib/stripe";
 import {
@@ -31,7 +32,11 @@ export default function Product({ product }: ProductProps) {
   const { isFallback } = useRouter();
 
   if (isFallback) {
-    return <p>Loading</p>;
+    return (
+      <ProductContainer>
+        <MyLoader />
+      </ProductContainer>
+    );
   }
 
   function handlePlaceOnCart() {

@@ -59,7 +59,7 @@ export default function Home({ products }: HomeProps) {
                     }).format(product.price / 100)}
                   </span>
                 </div>
-                <button onClick={handlePlaceOnCart}>
+                <button type="button" onClick={handlePlaceOnCart}>
                   <Handbag size={24} />
                 </button>
               </footer>
