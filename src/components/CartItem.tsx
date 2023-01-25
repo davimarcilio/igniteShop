@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { Product } from "../context/CartContext";
+import { useContext } from "react";
+import { CartContext, Product } from "../context/CartContext";
 import {
   CardItemContainer,
   ImageContainer,
@@ -8,6 +9,12 @@ interface CartItemProps {
   product: Product;
 }
 export function CartItem({ product }: CartItemProps) {
+  const { removeFromCart } = useContext(CartContext);
+
+  function handleRemoveFromCart() {
+    removeFromCart(product.id);
+  }
+
   return (
     <CardItemContainer>
       <ImageContainer>
@@ -22,7 +29,7 @@ export function CartItem({ product }: CartItemProps) {
             currency: "BRL",
           }).format(product.price / 100)}
         </strong>
-        <button>Remover</button>
+        <button onClick={handleRemoveFromCart}>Remover</button>
       </div>
     </CardItemContainer>
   );

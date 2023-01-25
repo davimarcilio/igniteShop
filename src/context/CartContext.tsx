@@ -24,6 +24,7 @@ interface Context {
   isAddingToCart: boolean;
   placeOnCart: (product: Product) => void;
   buyProducts: (allProductsInCart: ProductForCheckout[]) => void;
+  removeFromCart: (productId: string) => void;
 }
 
 export const CartContext = createContext({} as Context);
@@ -34,6 +35,10 @@ export function CartContextProvider({ children }: CartContextProps) {
 
   function placeOnCart(product: Product) {
     setProducts((state) => [...state, product]);
+  }
+
+  function removeFromCart(productId: string) {
+    setProducts((state) => state.filter((product) => product.id !== productId));
   }
 
   async function buyProducts(allProductsInCart: ProductForCheckout[]) {
@@ -54,7 +59,13 @@ export function CartContextProvider({ children }: CartContextProps) {
 
   return (
     <CartContext.Provider
-      value={{ products, isAddingToCart, placeOnCart, buyProducts }}
+      value={{
+        products,
+        isAddingToCart,
+        placeOnCart,
+        buyProducts,
+        removeFromCart,
+      }}
     >
       {children}
     </CartContext.Provider>
