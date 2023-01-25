@@ -6,17 +6,16 @@ import { GetStaticProps } from "next";
 import { stripe } from "../lib/stripe";
 import Stripe from "stripe";
 import Head from "next/head";
+import { Handbag } from "phosphor-react";
+import { useContext } from "react";
+import { CartContext, Product as ProductType } from "../context/CartContext";
 
 interface HomeProps {
-  products: {
-    id: string;
-    name: string;
-    imageUrl: string;
-    price: number;
-  }[];
+  products: ProductType[];
 }
 
 export default function Home({ products }: HomeProps) {
+  const { placeOnCart } = useContext(CartContext);
   const [sliderRef] = useKeenSlider({
     slides: {
       perView: 3,
@@ -31,6 +30,9 @@ export default function Home({ products }: HomeProps) {
       </Head>
       <HomeContainer ref={sliderRef} className={"keen-slider"}>
         {products.map((product) => {
+          function handlePlaceOnCart() {
+            placeOnCart(product);
+          }
           return (
             <Product
               prefetch={false}
@@ -48,8 +50,18 @@ export default function Home({ products }: HomeProps) {
               />
 
               <footer>
-                <strong> {product.name} </strong>
-                <span>{product.price}</span>
+                <div>
+                  <strong> {product.name} </strong>
+                  <span>
+                    {new Intl.NumberFormat("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    }).format(product.price / 100)}
+                  </span>
+                </div>
+                <button onClick={handlePlaceOnCart}>
+                  <Handbag size={24} />
+                </button>
               </footer>
             </Product>
           );
@@ -70,10 +82,8 @@ export const getStaticProps: GetStaticProps = async () => {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      }).format(price.unit_amount! / 100),
+      price: price.unit_amount,
+      defaultPriceId: price.id,
     };
   });
   return {
