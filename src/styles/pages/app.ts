@@ -25,6 +25,14 @@ export const CartButton = styled("button", {
   position: "relative",
   border: "none",
   cursor: "pointer",
+  color: "$gray300",
+  "&:disabled": {
+    color: "#8D8D99",
+    cursor: "not-allowed",
+    span: {
+      display: "none",
+    },
+  },
   span: {
     position: "absolute",
     backgroundColor: "$green500",
