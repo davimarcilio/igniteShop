@@ -7,7 +7,7 @@ import Link from "next/link";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cart } from "../components/Cart";
 import { CartContextProvider } from "../context/CartContext";
-import { CartTriggerButton } from "../styles/components/CartTriggerButton";
+import { CartTriggerButton } from "../components/CartTriggerButton";
 
 globalStyles();
 

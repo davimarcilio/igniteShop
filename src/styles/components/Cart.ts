@@ -14,9 +14,24 @@ export const ModalContent = styled(Dialog.Content, {
 });
 
 export const ModalTitleAndItems = styled("div", {
+  position: "relative",
   display: "flex",
   flexDirection: "column",
   gap: "2rem",
+  overflowY: "scroll",
+  "&::-webkit-scrollbar": {
+    position: "absolute",
+    right: 0,
+    width: 5,
+    borderRadius: 9999,
+  },
+  "&::-webkit-scrollbar-track": {
+    backgroundColor: "$gray800",
+  },
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "$green500",
+    borderRadius: 999,
+  },
 });
 
 export const ModalTitle = styled(Dialog.Title, {
