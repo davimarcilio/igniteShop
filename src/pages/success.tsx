@@ -4,17 +4,27 @@ import Image from "next/image";
 import Link from "next/link";
 import Stripe from "stripe";
 import { stripe } from "../lib/stripe";
-import { ImageContainer, SuccessContainer } from "../styles/pages/success";
-
+import {
+  AvatarImage,
+  ImageContainer,
+  MultiImagesContainer,
+  SuccessContainer,
+} from "../styles/pages/success";
+import * as Avatar from "@radix-ui/react-avatar";
 interface SuccessProps {
   customerName: string;
   product: {
     name: string;
     imageUrl: string;
   };
+  images: string[];
 }
 
-export default function Success({ customerName, product }: SuccessProps) {
+export default function Success({
+  customerName,
+  product,
+  images,
+}: SuccessProps) {
   if (!customerName) {
     return (
       <SuccessContainer>
@@ -28,18 +38,39 @@ export default function Success({ customerName, product }: SuccessProps) {
         <title>Compra efetuada | Ignite Shop</title>
         <meta name="robots" content="noindex" />
       </Head>
-      <SuccessContainer>
-        <h1>Compra efetuada!</h1>
-        <ImageContainer>
-          <Image width={120} height={110} src={product.imageUrl} alt="" />
-        </ImageContainer>
+      {images.length === 1 ? (
+        <SuccessContainer>
+          <h1>Compra efetuada!</h1>
+          <ImageContainer>
+            <Image width={120} height={110} src={product.imageUrl} alt="" />
+          </ImageContainer>
 
-        <p>
-          Uhuul <strong>{customerName}</strong> , sua{" "}
-          <strong>{product.name}</strong> já está a caminho da sua casa.
-        </p>
-        <Link href={"/"}>Voltar ao catálogo</Link>
-      </SuccessContainer>
+          <p>
+            Uhuul <strong>{customerName}</strong> , sua{" "}
+            <strong>{product.name}</strong> já está a caminho da sua casa.
+          </p>
+          <Link href={"/"}>Voltar ao catálogo</Link>
+        </SuccessContainer>
+      ) : (
+        <SuccessContainer>
+          <h1>Compra efetuada!</h1>
+          <MultiImagesContainer>
+            {images.map((image) => (
+              <AvatarImage key={image} width={120} height={120} src={image} />
+            ))}
+          </MultiImagesContainer>
+          {/* <ImageContainer>
+            <Image width={120} height={110} src={product.imageUrl} alt="" />
+          </ImageContainer> */}
+
+          <p>
+            Uhuul <strong>{customerName}</strong> , sua compra de{" "}
+            <strong>{images.length}</strong> camisetas já está a caminho da sua
+            casa.
+          </p>
+          <Link href={"/"}>Voltar ao catálogo</Link>
+        </SuccessContainer>
+      )}
     </>
   );
 }
@@ -61,15 +92,24 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   });
 
   const customerName = session.customer_details?.name;
-  const product = session.line_items?.data[0].price?.product as Stripe.Product;
+  // const product = session.line_items?.data[0].price?.product as Stripe.Product;
+  const allProductsArray = session.line_items!.data.map(
+    (allData) => allData.price?.product as Stripe.Product
+  );
+  const allProductsImages = allProductsArray.map(
+    (product) => product.images[0]
+  );
+
+  const oneProduct = allProductsArray[0];
 
   return {
     props: {
       customerName,
       product: {
-        name: product.name,
-        imageUrl: product.images[0],
+        name: oneProduct.name,
+        imageUrl: oneProduct.images[0],
       },
+      images: allProductsImages,
     },
   };
 };
